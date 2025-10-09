@@ -1,0 +1,13 @@
+asgiref
+Django
+django-cors-headers
+djangorestframework
+djangorestframework-simplejwt
+drf-spectacular
+drf-yasg
+PyJWT
+sqlparse
+tzdata
+django-rest-knox
+pillow
+

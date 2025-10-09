@@ -1,0 +1,13 @@
+{
+    "email" : "qwer@gmail.com",
+    "username" : "qwertya",
+    "first_name" : "asd",
+    "last_name" : "qwerty",
+    "password" : 1234
+}
+
+
+superuser for app ORT_Arena
+Email: aidarovaidarova@gmail.com
+Username: Rayana
+Password: 123456789
