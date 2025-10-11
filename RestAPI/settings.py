@@ -45,6 +45,10 @@ INSTALLED_APPS = [
     'knox',
     'authUser',
     'drf_yasg',
+    'Edu',
+    'LeaderBoard',
+    'conTests',
+    
 ]
 
 ROOT_URLCONF = 'RestAPI.urls'
