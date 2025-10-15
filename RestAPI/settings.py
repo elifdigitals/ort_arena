@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'Edu',
     'LeaderBoard',
     'conTests',
-    
+
 ]
 
 ROOT_URLCONF = 'RestAPI.urls'
