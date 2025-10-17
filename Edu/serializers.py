@@ -6,6 +6,7 @@ class SubjectSerializer(serializers.ModelSerializer):
       class Meta:
             model = Subject
             fields = '__all__'
+            ref_name = 'EduSubject'
 
 
 class TopicSerializer(serializers.ModelSerializer):
@@ -30,3 +31,4 @@ class ExerciseSerializer(serializers.ModelSerializer):
       class Meta:
             model = Exercise
             fields = '__all__'
+            ref_name = 'EduExercise'

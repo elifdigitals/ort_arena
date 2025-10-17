@@ -2,7 +2,7 @@ from django.apps import AppConfig
 
 class ContestConfig(AppConfig):
         default_auto_field = 'django.db.models.BigAutoField'
-        name = 'Contest'
+        name = 'conTests'
 
         def ready(self):
             import threading

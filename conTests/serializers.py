@@ -7,12 +7,14 @@ class SubjectSerializer(serializers.ModelSerializer):
       class Meta:
             model = Subject
             fields = ['id', 'subject_name', 'description']
+            ref_name = 'ConTestsSubject'
 
 
 class ExerciseSerializer(serializers.ModelSerializer):
       class Meta:
             model = Exercise
             fields = ['id', 'text', 'type', 'difficulty', 'points']
+            ref_name = 'ConTestsExercise'
 
 
 class ContestExerciseSerializer(serializers.ModelSerializer):

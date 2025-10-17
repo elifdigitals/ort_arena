@@ -1,1 +1,1 @@
-default_app_config = 'Contest.apps.ContestConfig'
+default_app_config = 'conTests.apps.ContestConfig'
