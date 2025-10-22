@@ -9,5 +9,5 @@ PyJWT
 sqlparse
 tzdata
 django-rest-knox
-pillow
+pillowpsycopg2-binary
 
