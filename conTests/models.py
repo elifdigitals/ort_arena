@@ -58,6 +58,8 @@ class Contest(models.Model):
     duration = models.PositiveIntegerField(help_text="Duration in minutes")
     description = models.TextField(blank=True, null=True)
 
+    is_finished = models.BooleanField(default=False)
+
     def __str__(self):
         return f"{self.name} ({self.get_contest_type_display()})"
 
