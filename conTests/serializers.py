@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Contest, ContestParticipant, ParticipantAnswer, ContestExercise, UserRating
+from .models import Contest, ContestParticipant, ParticipantAnswer, ContestExercise, UserRating, Duel
 from Edu.models import Exercise, Subject
 
 
@@ -58,3 +58,16 @@ class UserRatingSerializer(serializers.ModelSerializer):
       class Meta:
             model = UserRating
             fields = ['user', 'rating', 'rank']
+
+
+class DuelSerializer(serializers.ModelSerializer):
+    challenger_name = serializers.CharField(source='challenger.username', read_only=True)
+    opponent_name = serializers.CharField(source='opponent.username', read_only=True)
+    winner_name = serializers.CharField(source='winner.username', read_only=True)
+
+    class Meta:
+        model = Duel
+        fields = [
+            'id', 'challenger_name', 'opponent_name', 'status',
+            'started_at', 'finished_at', 'winner_name'
+            ]

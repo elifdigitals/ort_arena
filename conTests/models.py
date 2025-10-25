@@ -1,5 +1,5 @@
 from django.db import models
-from django.conf import settings
+from RestAPI import settings
 from django.utils import timezone
 from Edu.models import Subject, Exercise
 
@@ -165,3 +165,84 @@ class ParticipantAnswer(models.Model):
         self.is_correct = passed
         self.save(update_fields=["is_correct"])
         return passed
+
+
+
+class Duel(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Ожидание'),
+        ('accepted', 'Принят'),
+        ('rejected', 'Отклонён'),
+        ('in_progress', 'В процессе'),
+        ('finished', 'Завершён'),
+    ]
+
+    challenger = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='duels_started'
+    )
+    opponent = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='duels_received'
+    )
+    contest = models.ForeignKey('Contest', on_delete=models.SET_NULL, null=True, blank=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+    started_at = models.DateTimeField(null=True, blank=True)
+    finished_at = models.DateTimeField(null=True, blank=True)
+    winner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='duel_wins'
+    )
+
+    def __str__(self):
+        return f"{self.challenger.username} vs {self.opponent.username} ({self.status})"
+
+    def accept(self):
+        """Принять вызов и создать мини-контест"""
+        from Edu.models import Exercise
+        import random
+
+        if self.status != 'pending':
+            return
+
+        exercise = random.choice(Exercise.objects.all())
+        contest = Contest.objects.create(
+            subject=exercise.subject,
+            name=f"Дуэль: {self.challenger.username} vs {self.opponent.username}",
+            start_time=timezone.now(),
+            end_time=timezone.now() + timezone.timedelta(minutes=10),
+            duration=10,
+            description="Дуэльная битва на скорость!"
+        )
+        ContestExercise.objects.create(contest=contest, exercise=exercise)
+
+        ContestParticipant.objects.create(contest=contest, user=self.challenger)
+        ContestParticipant.objects.create(contest=contest, user=self.opponent)
+
+        self.contest = contest
+        self.status = 'in_progress'
+        self.started_at = timezone.now()
+        self.save()
+
+    def reject(self):
+        self.status = 'rejected'
+        self.save()
+
+    def finish(self):
+        """Подсчитать победителя"""
+        if not self.contest:
+            return
+        participants = ContestParticipant.objects.filter(contest=self.contest)
+        if not participants.exists():
+            return
+        best = max(participants, key=lambda p: p.score)
+        self.winner = best.user
+        self.status = 'finished'
+        self.finished_at = timezone.now()
+        self.save()
