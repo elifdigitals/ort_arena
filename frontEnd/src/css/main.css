@@ -16,9 +16,9 @@ a {
       text-decoration: none;
 }
 
-img {
-      max-width: 100%;
-}
+
+
+
 .wrapper {
       background-image: url("src/images/header-bg.png");
       background-size: cover;
@@ -29,7 +29,7 @@ img {
       justify-content: center;
       color: white;
       font-size: 2rem;
-    }
+}
 
 
 
@@ -54,7 +54,7 @@ ul {
 
 
 .footer {
-	background-color: #24262b;
+	background-color: whitesmoke;
       padding: 70px 0;
 }
 
