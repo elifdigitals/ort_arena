@@ -167,6 +167,65 @@ header nav ul li.btn a:hover {
 
 }
 
+.block-container {
+    max-width: 70%;
+    margin: 0 auto; /*Центрируем по горизонтали*/
+}
+
+.block {
+    display: flex; 
+    justify-content: space-between;
+    align-items: center; /*по вертикали */
+    margin: 100px 0; /*Отступы*/
+}
+.block .text {
+    display: flex;
+    flex-direction: column;
+    flex: 1; /* текст = 1 часть пространства */
+    padding: 10px;
+    font-size: 18px;
+}
+.block .text p{
+    width: 100%;
+
+}
+.block .image {
+    flex: 1; /* фотка = 1 часть пространства */
+    display: flex;
+    justify-content: center; /* Центрируем фото в блоке */
+    padding: 10px;
+}
+.block .image img {
+    max-width: 100%; 
+    height: auto;
+}
+.text-between {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 20px;
+}
+.card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 90%;
+
+    margin: 0 auto; /*Центрируем по <------->*/
+}
+
+.card {
+    width: 295px;
+    height: 295px; 
+    background-color: #f4f1fd;
+    border-radius: 10px; /* Скругленные углы */
+    text-align: center; /* текст и иконка */
+    padding: 20px;
+    margin: 20px;
+    position: relative; /* Для позиционирования номера */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Тень для объема */
+}
+
+
 /* Footer */
 .footer {
     background-color: #24262b;
