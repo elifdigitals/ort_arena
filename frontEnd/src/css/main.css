@@ -144,28 +144,22 @@ header nav ul li.btn a:hover {
 }
 
 
-/* base-information */
 .base-container{
     max-width: 1140px;
     margin: 0 auto;
-    padding: 0 20px;
-    padding-top: 50px;
+    padding: 70px 50px 0 60px;
     display: flex;              
+    flex-direction: column;     
     justify-content: center;   
     align-items: center;       
     text-align: center; 
 }
 
 .base-container p{
-    max-width: 1140px;
-    margin: 0 auto;
-    padding: 0 20px;
-    display: flex;              
-    justify-content: center;   
-    align-items: center;       
-    text-align: center; 
-
+    max-width: 800px;
+    margin-top: 40px;
 }
+
 
 .block-container {
     max-width: 70%;
@@ -192,6 +186,7 @@ header nav ul li.btn a:hover {
 .block .image {
     flex: 1; /* фотка = 1 часть пространства */
     display: flex;
+    max-height: 450px;
     justify-content: center; /* Центрируем фото в блоке */
     padding: 10px;
 }
@@ -226,7 +221,6 @@ header nav ul li.btn a:hover {
 }
 
 
-/* Footer */
 .footer {
     background-color: #24262b;
     padding: 70px 0 30px;
