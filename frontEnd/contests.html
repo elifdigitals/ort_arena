@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORT_Arena - Contests</title>
+    <link rel="stylesheet" href="src/css/contests.css">
+</head>
+<body>
+      <header class="header">
+            <nav class="nav">
+                  <div class="logo">ORT_Arena</div>
+                  <ul class="nav-links">
+                  <li><a href="home_page.html">Home Page</a></li>
+                  <li><a href="/problems">Problems</a></li>
+                  <li><a href="subjects.html">Subjects</a></li>
+                  <li><a href="#" class="active">Contests</a></li>
+                  <li><a href="/leaderboard">Leaderboard</a></li>
+                  </ul>
+            </nav>
+      </header>
+
+      <div class="container">
+            <div class="page-header">
+                  <h1>Контесты</h1>
+                  <p>Участвуй в соревнованиях и повышай свой рейтинг</p>
+            </div>
+
+            <div class="tabs">
+                  <button class="tab-btn active" data-tab="upcoming">Предстоящие</button>
+                  <button class="tab-btn" data-tab="active">Активные сейчас</button>
+                  <button class="tab-btn" data-tab="finished">Завершенные</button>
+                  <button class="tab-btn" data-tab="my">Мои контесты</button>
+            </div>
+
+            <!-- Предстоящие контесты -->
+            <div id="upcoming" class="contests-section active">
+                  <div id="upcoming-contests"></div>
+            </div>
+
+            <!-- Активные контесты -->
+            <div id="active" class="contests-section">
+                  <div id="active-contests"></div>
+            </div>
+
+            <!-- Завершенные контесты -->
+            <div id="finished" class="contests-section">
+                  <div id="finished-contests"></div>
+            </div>
+
+            <!-- Мои контесты -->
+            <div id="my" class="contests-section">
+                  <div id="my-contests"></div>
+            </div>
+      </div>
+
+      <script>
+            // Временные данные (позже заменим на API)
+            const tempContests = {
+                  upcoming: [
+                  {
+                        id: 1,
+                        name: 'Еженедельный ОРТ Марафон',
+                        subject: 'Математика',
+                        type: 'official',
+                        start_time: '2024-12-05T10:00:00',
+                        duration: 180,
+                        description: 'Масштабное тестирование по математике. Проверь свои знания!',
+                        participants_count: 245,
+                        exercises_count: 30
+                  },
+                  {
+                        id: 2,
+                        name: 'Турнир по физике',
+                        subject: 'Физика',
+                        type: 'training',
+                        start_time: '2024-12-06T15:00:00',
+                        duration: 120,
+                        description: 'Механика и электричество. Тренировочный контест для подготовки.',
+                        participants_count: 189,
+                        exercises_count: 25
+                  },
+                  {
+                        id: 3,
+                        name: 'Химическая битва',
+                        subject: 'Химия',
+                        type: 'official',
+                        start_time: '2024-12-07T12:00:00',
+                        duration: 150,
+                        description: 'Органическая и неорганическая химия. Официальный зачетный контест.',
+                        participants_count: 167,
+                        exercises_count: 28
+                  }
+                  ],
+                  active: [
+                  {
+                        id: 4,
+                        name: 'Быстрый тест: Биология',
+                        subject: 'Биология',
+                        type: 'training',
+                        start_time: '2024-12-04T14:00:00',
+                        end_time: '2024-12-04T15:30:00',
+                        duration: 90,
+                        description: 'Ботаника и зоология. Тренировочный спринт!',
+                        participants_count: 87,
+                        exercises_count: 20
+                  }
+                  ],
+                  finished: [
+                  {
+                        id: 5,
+                        name: 'Математический турнир',
+                        subject: 'Математика',
+                        type: 'official',
+                        start_time: '2024-11-28T10:00:00',
+                        duration: 180,
+                        description: 'Сложный контест с задачами повышенной сложности.',
+                        participants_count: 312,
+                        exercises_count: 35,
+                        your_rank: 42,
+                        your_score: 2450
+                  },
+                  {
+                        id: 6,
+                        name: 'История Кыргызстана',
+                        subject: 'История',
+                        type: 'training',
+                        start_time: '2024-11-25T16:00:00',
+                        duration: 120,
+                        description: 'Тестирование знаний по истории родной страны.',
+                        participants_count: 198,
+                        exercises_count: 40,
+                        your_rank: 15,
+                        your_score: 3200
+                  }
+                  ]
+            };
+
+            function formatDate(dateString) {
+                  const date = new Date(dateString);
+                  const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 
+                              'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+                  const day = date.getDate();
+                  const month = months[date.getMonth()];
+                  const hours = date.getHours().toString().padStart(2, '0');
+                  const minutes = date.getMinutes().toString().padStart(2, '0');
+                  return `${day} ${month}, ${hours}:${minutes}`;
+            }
+
+            function formatDuration(minutes) {
+                  const hours = Math.floor(minutes / 60);
+                  const mins = minutes % 60;
+                  return hours > 0 ? `${hours}ч ${mins}мин` : `${mins} минут`;
+            }
+
+            function renderContest(contest, status) {
+                  let statusBadge = '';
+                  let actionButtons = '';
+
+                  if (status === 'upcoming') {
+                  statusBadge = `
+                        <div class="status-info">
+                              <div class="status-dot status-upcoming"></div>
+                              <span class="status-text">Начнется ${formatDate(contest.start_time)}</span>
+                        </div>
+                  `;
+                  actionButtons = `
+                        <button class="btn btn-primary" onclick="registerContest(${contest.id})">
+                              Зарегистрироваться
+                        </button>
+                        <button class="btn btn-secondary" onclick="viewDetails(${contest.id})">
+                              Подробнее
+                        </button>
+                  `;
+                  } else if (status === 'active') {
+                  statusBadge = `
+                        <div class="status-info">
+                              <div class="status-dot status-active"></div>
+                              <span class="status-text">🔴 В ЭФИРЕ</span>
+                        </div>
+                  `;
+                  actionButtons = `
+                        <button class="btn btn-primary" onclick="joinContest(${contest.id})">
+                              Войти в контест
+                        </button>
+                  `;
+                  } else if (status === 'finished') {
+                  statusBadge = `
+                        <div class="status-info">
+                              <div class="status-dot status-finished"></div>
+                              <span class="status-text">Завершен</span>
+                        </div>
+                  `;
+                  actionButtons = `
+                        <button class="btn btn-secondary" onclick="viewResults(${contest.id})">
+                              Результаты
+                        </button>
+                        ${contest.your_rank ? `
+                              <button class="btn btn-primary" onclick="viewSolutions(${contest.id})">
+                              Мои решения
+                              </button>
+                        ` : ''}
+                  `;
+                  }
+
+            return `
+                  <div class="contest-card">
+                        <div class="contest-type-badge ${contest.type === 'official' ? 'badge-official' : 'badge-training'}">
+                              ${contest.type === 'official' ? '⭐ Официальный' : '📝 Тренировка'}
+                        </div>
+
+                        <div class="contest-header">
+                              <div class="contest-icon">🏆</div>
+                              <div class="contest-info">
+                              <div class="contest-title">${contest.name}</div>
+                              <div class="contest-subject">📚 ${contest.subject}</div>
+                              <div class="contest-description">${contest.description}</div>
+                              </div>
+                        </div>
+
+                        <div class="contest-meta">
+                              <div class="meta-item">
+                              <div class="meta-icon">⏰</div>
+                              <div class="meta-content">
+                                    <span class="meta-label">Длительность</span>
+                                    <span class="meta-value">${formatDuration(contest.duration)}</span>
+                              </div>
+                              </div>
+                              <div class="meta-item">
+                              <div class="meta-icon">📝</div>
+                              <div class="meta-content">
+                                    <span class="meta-label">Задач</span>
+                                    <span class="meta-value">${contest.exercises_count}</span>
+                              </div>
+                              </div>
+                              <div class="meta-item">
+                              <div class="meta-icon">👥</div>
+                              <div class="meta-content">
+                                    <span class="meta-label">Участников</span>
+                                    <span class="meta-value">${contest.participants_count}</span>
+                              </div>
+                              </div>
+                              ${contest.your_rank ? `
+                              <div class="meta-item">
+                                    <div class="meta-icon">🏅</div>
+                                    <div class="meta-content">
+                                          <span class="meta-label">Ваше место</span>
+                                          <span class="meta-value">#${contest.your_rank}</span>
+                                    </div>
+                              </div>
+                              ` : ''}
+                        </div>
+
+                        <div class="contest-status">
+                              ${statusBadge}
+                              <div class="contest-actions">
+                              ${actionButtons}
+                              </div>
+                        </div>
+                  </div>
+                  `;
+            }
+
+            function renderContests(status) {
+                  const container = document.getElementById(`${status}-contests`);
+                  const contests = tempContests[status];
+
+                  if (!contests || contests.length === 0) {
+                  container.innerHTML = `
+                        <div class="empty-state">
+                              <div class="empty-state-icon">📭</div>
+                              <h3>Контестов не найдено</h3>
+                              <p>В этой категории пока нет контестов</p>
+                        </div>
+                  `;
+                  return;
+                  }
+
+            container.innerHTML = contests.map(contest => renderContest(contest, status)).join('');
+            }
+
+            // Переключение вкладок
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                  btn.addEventListener('click', function() {
+                  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                  document.querySelectorAll('.contests-section').forEach(s => s.classList.remove('active'));
+                  
+                  this.classList.add('active');
+                  const tab = this.dataset.tab;
+                  document.getElementById(tab).classList.add('active');
+                  });
+            });
+
+            // Функции для действий
+            function registerContest(id) {
+                  alert(`Регистрация на контест #${id}`);
+                  // Здесь будет API запрос
+            }
+
+            function joinContest(id) {
+                  window.location.href = `/contests/${id}/participate`;
+            }
+
+            function viewDetails(id) {
+                  window.location.href = `/contests/${id}`;
+            }
+
+            function viewResults(id) {
+                  window.location.href = `/contests/${id}/results`;
+            }
+
+            function viewSolutions(id) {
+                  window.location.href = `/contests/${id}/my-solutions`;
+            }
+
+            // Инициализация
+            renderContests('upcoming');
+            renderContests('active');
+            renderContests('finished');
+            renderContests('my');
+      </script>
+</body>
+</html>

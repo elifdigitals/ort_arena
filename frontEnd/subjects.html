@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORT_Arena - Subjects</title>
+    <link rel="stylesheet" href="src/css/subject.css">
+</head>
+<body>
+      <header class="header">
+            <nav class="nav">
+                  <div class="logo">ORT_Arena</div>
+                  <ul class="nav-links">
+                  <li><a href="/">Home Page</a></li>
+                  <li><a href="/problems">Problems</a></li>
+                  <li><a href="#" class="active">Subjects</a></li>
+                  <li><a href="/contests">Contests</a></li>
+                  <li><a href="/leaderboard">Leaderboard</a></li>
+                  </ul>
+            </nav>
+      </header>
+
+      <div class="container">
+            <div class="page-header">
+                  <h1>Предметы</h1>
+                  <p>Выбери предмет для изучения</p>
+            </div>
+
+            <div class="search-bar">
+                  <span class="search-icon">🔍</span>
+                  <input type="text" id="search-input" placeholder="Поиск предмета...">
+            </div>
+
+            <div class="filter-buttons">
+                  <button class="filter-btn active" data-filter="all">Все предметы</button>
+                  <button class="filter-btn" data-filter="science">Естественные науки</button>
+                  <button class="filter-btn" data-filter="math">Точные науки</button>
+                  <button class="filter-btn" data-filter="humanities">Гуманитарные</button>
+            </div>
+
+            <div class="subjects-grid" id="subjects-container">
+                  <div class="loading">Загрузка предметов...</div>
+            </div>
+      </div>
+
+      <script>
+            const subjectIcons = {
+                  'Математика': '📐',
+                  'Физика': '⚛️',
+                  'Химия': '🧪',
+                  'Биология': '🧬',
+                  'История': '📜',
+                  'География': '🌍',
+                  'Литература': '📖',
+                  'Английский': '🇬🇧',
+                  'Информатика': '💻',
+                  'Обществознание': '👥'
+            };
+
+            // Временные данные (потом заменим на API)
+            const tempSubjects = [
+                  {
+                  id: 1,
+                  subject_name: 'Математика',
+                  description: 'Алгебра, геометрия, тригонометрия и математический анализ',
+                  topics_count: 45,
+                  exercises_count: 320,
+                  category: 'math'
+                  },
+                  {
+                  id: 2,
+                  subject_name: 'Физика',
+                  description: 'Механика, электричество, оптика и квантовая физика',
+                  topics_count: 38,
+                  exercises_count: 285,
+                  category: 'science'
+                  },
+                  {
+                  id: 3,
+                  subject_name: 'Химия',
+                  description: 'Органическая и неорганическая химия, химические реакции',
+                  topics_count: 32,
+                  exercises_count: 245,
+                  category: 'science'
+                  },
+                  {
+                  id: 4,
+                  subject_name: 'Биология',
+                  description: 'Ботаника, зоология, анатомия и генетика',
+                  topics_count: 40,
+                  exercises_count: 298,
+                  category: 'science'
+                  },
+                  {
+                  id: 5,
+                  subject_name: 'История',
+                  description: 'История Кыргызстана и всемирная история',
+                  topics_count: 35,
+                  exercises_count: 267,
+                  category: 'humanities'
+                  },
+                  {
+                  id: 6,
+                  subject_name: 'География',
+                  description: 'Физическая и экономическая география мира',
+                  topics_count: 28,
+                  exercises_count: 198,
+                  category: 'humanities'
+                  }
+            ];
+
+            function getSubjectIcon(subjectName) {
+                  return subjectIcons[subjectName] || '📚';
+            }
+
+            function renderSubjects(subjects) {
+                  const container = document.getElementById('subjects-container');
+                  
+                  if (subjects.length === 0) {
+                  container.innerHTML = '<div class="loading">Предметы не найдены</div>';
+                  return;
+                  }
+
+                  container.innerHTML = subjects.map(subject => `
+                  <div class="subject-card" data-category="${subject.category}" onclick="openSubject(${subject.id})">
+                        <div class="subject-icon">${getSubjectIcon(subject.subject_name)}</div>
+                        <div class="subject-title">${subject.subject_name}</div>
+                        <div class="subject-description">${subject.description}</div>
+                        <div class="subject-stats">
+                              <div class="stat-item">
+                              <span class="stat-icon">📝</span>
+                              <span>${subject.topics_count} тем</span>
+                              </div>
+                              <div class="stat-item">
+                              <span class="stat-icon">🎯</span>
+                              <span>${subject.exercises_count} задач</span>
+                              </div>
+                        </div>
+                  </div>
+                  `).join('');
+            }
+
+            function openSubject(subjectId) {
+                  // Переход на страницу тем по предмету
+                  window.location.href = `/subjects/${subjectId}/topics`;
+            }
+
+            // Фильтрация
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                  btn.addEventListener('click', function() {
+                  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                  this.classList.add('active');
+                  
+                  const filter = this.dataset.filter;
+                  const cards = document.querySelectorAll('.subject-card');
+                  
+                  cards.forEach(card => {
+                        if (filter === 'all' || card.dataset.category === filter) {
+                              card.style.display = 'block';
+                        } else {
+                              card.style.display = 'none';
+                        }
+                  });
+                  });
+            });
+
+            // Поиск
+            document.getElementById('search-input').addEventListener('input', function(e) {
+                  const searchTerm = e.target.value.toLowerCase();
+                  const cards = document.querySelectorAll('.subject-card');
+                  
+                  cards.forEach(card => {
+                  const title = card.querySelector('.subject-title').textContent.toLowerCase();
+                  const description = card.querySelector('.subject-description').textContent.toLowerCase();
+                  
+                  if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                        card.style.display = 'block';
+                  } else {
+                        card.style.display = 'none';
+                  }
+                  });
+            });
+
+            // Загрузка данных
+            async function loadSubjects() {
+                  // Временно используем тестовые данные
+                  // Позже заменим на: const response = await fetch('/api/subjects/');
+                  setTimeout(() => {
+                  renderSubjects(tempSubjects);
+                  }, 500);
+            }
+
+            loadSubjects();
+      </script>
+</body>
+</html>
