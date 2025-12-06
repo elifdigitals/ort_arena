@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>ORT Arena - Duels</title>
+      <link rel="stylesheet" href="src/css/duels.css">
+</head>
+<body>
+      <header class="header">
+            <nav class="nav">
+                  <div class="logo">ORT_Arena</div>
+                  <ul class="nav-links">
+                  <li><a href="home_page.html">Home Page</a></li>
+                  <li><a href="/problems">Problems</a></li>
+                  <li><a href="contests.html">Contests</a></li>
+                  <li><a href="#" class="active">Duels</a></li>
+                  <li><a href="/leaderboard">Leaderboard</a></li>
+                  </ul>
+            </nav>
+      </header>
+
+      <div class="container">
+            <div class="page-header">
+                  <h1>Дуэли</h1>
+                  <p>Вызови друга на поединок 1 на 1!</p>
+            </div>
+
+            <div class="action-card">
+                  <h2>Начать новую дуэль</h2>
+                  <p>Брось вызов другому игроку и докажи своё превосходство</p>
+                  <button class="btn btn-primary" onclick="openChallengeModal()">
+                  Вызвать на дуэль
+                  </button>
+            </div>
+
+            <div class="tabs">
+                  <button class="tab-btn active" data-tab="incoming">Входящие вызовы</button>
+                  <button class="tab-btn" data-tab="my-challenges">Мои вызовы</button>
+                  <button class="tab-btn" data-tab="active">Активные дуэли</button>
+                  <button class="tab-btn" data-tab="history">История</button>
+            </div>
+
+            <div id="incoming" class="duels-section active">
+                  <div id="incoming-duels"></div>
+            </div>
+
+            <div id="my-challenges" class="duels-section">
+                  <div id="my-challenges-duels"></div>
+            </div>
+
+            <div id="active" class="duels-section">
+                  <div id="active-duels"></div>
+            </div>
+
+            <div id="history" class="duels-section">
+                  <div id="history-duels"></div>
+            </div>
+      </div>
+
+      <!-- Модальное окно для вызова -->
+      <div id="challengeModal" class="modal">
+            <div class="modal-content">
+                  <div class="modal-header">Вызвать на дуэль</div>
+                  <div class="form-group">
+                  <label class="form-label">Выбери противника</label>
+                  <input type="text" class="form-input" id="opponentSearch" 
+                        placeholder="Введи имя пользователя..." 
+                        oninput="searchUsers(this.value)">
+                  <div id="userSuggestions" class="user-suggestions" style="display:none;"></div>
+                  </div>
+                  <div class="duel-actions">
+                  <button class="btn btn-primary" onclick="sendChallenge()">Отправить вызов</button>
+                  <button class="btn btn-secondary" onclick="closeChallengeModal()">Отмена</button>
+                  </div>
+            </div>
+      </div>
+
+      <script>
+            let selectedOpponent = null;
+
+            // Временные данные
+            const tempDuels = {
+                  incoming: [
+                  {
+                        id: 1,
+                        challenger: { username: 'Айдар Бекмуратов', rating: 2450 },
+                        opponent: { username: 'Ты', rating: 1845 },
+                        status: 'pending',
+                        created_at: '2024-12-04T14:30:00'
+                  },
+                  {
+                        id: 2,
+                        challenger: { username: 'Нурай Асанова', rating: 2380 },
+                        opponent: { username: 'Ты', rating: 1845 },
+                        status: 'pending',
+                        created_at: '2024-12-04T12:15:00'
+                  }
+                  ],
+                  'my-challenges': [
+                  {
+                        id: 3,
+                        challenger: { username: 'Ты', rating: 1845 },
+                        opponent: { username: 'Эмир Токтомушев', rating: 2315 },
+                        status: 'pending',
+                        created_at: '2024-12-04T10:00:00'
+                  }
+                  ],
+                  active: [
+                  {
+                        id: 4,
+                        challenger: { username: 'Ты', rating: 1845 },
+                        opponent: { username: 'Бекболот Исаев', rating: 1920 },
+                        status: 'in_progress',
+                        started_at: '2024-12-04T15:00:00',
+                        time_left: '5 минут'
+                  }
+                  ],
+                  history: [
+                  {
+                        id: 5,
+                        challenger: { username: 'Ты', rating: 1845 },
+                        opponent: { username: 'Алина Жумабаева', rating: 1780 },
+                        status: 'finished',
+                        winner: 'Ты',
+                        finished_at: '2024-12-03T18:30:00'
+                  },
+                  {
+                        id: 6,
+                        challenger: { username: 'Данияр Осмонов', rating: 2100 },
+                        opponent: { username: 'Ты', rating: 1845 },
+                        status: 'finished',
+                        winner: 'Данияр Осмонов',
+                        finished_at: '2024-12-02T16:45:00'
+                  }
+                  ]
+            };
+
+            const tempUsers = [
+                  { username: 'Айдар Бекмуратов', rating: 2450 },
+                  { username: 'Нурай Асанова', rating: 2380 },
+                  { username: 'Эмир Токтомушев', rating: 2315 },
+                  { username: 'Бекболот Исаев', rating: 1920 },
+                  { username: 'Алина Жумабаева', rating: 1780 }
+            ];
+
+            function getInitials(name) {
+                  return name.split(' ').map(n => n[0]).join('').toUpperCase();
+            }
+
+            function formatDate(dateString) {
+                  const date = new Date(dateString);
+                  const now = new Date();
+                  const diff = Math.floor((now - date) / 1000 / 60);
+                  
+                  if (diff < 60) return `${diff} минут назад`;
+                  if (diff < 1440) return `${Math.floor(diff / 60)} часов назад`;
+                  return `${Math.floor(diff / 1440)} дней назад`;
+            }
+
+            function renderDuel(duel, category) {
+                  const isYouChallenger = duel.challenger.username === 'Ты';
+                  let actions = '';
+                  
+                  if (category === 'incoming') {
+                  actions = `
+                        <button class="btn btn-success" onclick="acceptDuel(${duel.id})">
+                              Принять
+                        </button>
+                        <button class="btn btn-danger" onclick="rejectDuel(${duel.id})">
+                              Отклонить
+                        </button>
+                  `;
+                  } else if (category === 'active') {
+                  actions = `
+                        <button class="btn btn-primary" onclick="joinDuel(${duel.id})">
+                              Войти в дуэль
+                        </button>
+                  `;
+                  } else if (category === 'history') {
+                  const isWinner = duel.winner === 'Ты';
+                  actions = `
+                        <button class="btn btn-secondary" onclick="viewDuelResults(${duel.id})">
+                              Результаты
+                        </button>
+                  `;
+                  }
+
+                  let statusBadge = '';
+                  let statusClass = '';
+                  if (duel.status === 'pending') {
+                  statusBadge = 'Ожидание';
+                  statusClass = 'status-pending';
+                  } else if (duel.status === 'in_progress') {
+                  statusBadge = 'В процессе';
+                  statusClass = 'status-in-progress';
+                  } else if (duel.status === 'finished') {
+                  statusBadge = 'Завершена';
+                  statusClass = 'status-finished';
+                  }
+
+                  return `
+                  <div class="duel-card">
+                        <div class="duel-header">
+                              <div class="duel-status-badge ${statusClass}">${statusBadge}</div>
+                              <div style="color: #999; font-size: 14px;">
+                              ${duel.created_at ? formatDate(duel.created_at) : ''}
+                              </div>
+                        </div>
+
+                        <div class="duel-players">
+                              <div class="player">
+                              <div class="player-avatar">${getInitials(duel.challenger.username)}</div>
+                              <div class="player-name">${duel.challenger.username}</div>
+                              <div class="player-rating">⭐ ${duel.challenger.rating}</div>
+                              </div>
+
+                              <div class="vs-icon">⚔️</div>
+
+                              <div class="player">
+                              <div class="player-avatar">${getInitials(duel.opponent.username)}</div>
+                              <div class="player-name">${duel.opponent.username}</div>
+                              <div class="player-rating">⭐ ${duel.opponent.rating}</div>
+                              </div>
+                        </div>
+
+                        ${duel.time_left ? `
+                              <div class="duel-info">
+                              <div class="info-row">
+                                    <span class="info-label">⏰ Осталось времени</span>
+                                    <span class="info-value">${duel.time_left}</span>
+                              </div>
+                              </div>
+                        ` : ''}
+
+                        ${duel.winner ? `
+                              <div class="duel-info">
+                              <div class="info-row">
+                                    <span class="info-label">🏆 Победитель</span>
+                                    <span class="info-value">${duel.winner}</span>
+                              </div>
+                              </div>
+                        ` : ''}
+
+                        <div class="duel-actions">
+                              ${actions}
+                        </div>
+                  </div>
+                  `;
+            }
+
+            function renderDuels(category) {
+                  const container = document.getElementById(`${category}-duels`);
+                  const duels = tempDuels[category];
+
+                  if (!duels || duels.length === 0) {
+                  container.innerHTML = `
+                        <div class="empty-state">
+                              <div class="empty-state-icon">🎮</div>
+                              <h3>Дуэлей не найдено</h3>
+                              <p>Здесь пока пусто</p>
+                        </div>
+                  `;
+                  return;
+                  }
+
+                  container.innerHTML = duels.map(duel => renderDuel(duel, category)).join('');
+            }
+
+            // Переключение вкладок
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                  btn.addEventListener('click', function() {
+                  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                  document.querySelectorAll('.duels-section').forEach(s => s.classList.remove('active'));
+                  
+                  this.classList.add('active');
+                  const tab = this.dataset.tab;
+                  document.getElementById(tab).classList.add('active');
+                  });
+            });
+
+            // Модальное окно
+            function openChallengeModal() {
+                  document.getElementById('challengeModal').classList.add('active');
+            }
+
+            function closeChallengeModal() {
+                  document.getElementById('challengeModal').classList.remove('active');
+                  document.getElementById('opponentSearch').value = '';
+                  document.getElementById('userSuggestions').style.display = 'none';
+                  selectedOpponent = null;
+            }
+
+            function searchUsers(query) {
+                  const suggestions = document.getElementById('userSuggestions');
+                  
+                  if (!query) {
+                  suggestions.style.display = 'none';
+                  return;
+                  }
+
+                  const filtered = tempUsers.filter(user => 
+                  user.username.toLowerCase().includes(query.toLowerCase())
+                  );
+
+                  if (filtered.length === 0) {
+                  suggestions.style.display = 'none';
+                  return;
+                  }
+
+                  suggestions.innerHTML = filtered.map(user => `
+                  <div class="user-suggestion" onclick="selectOpponent('${user.username}', ${user.rating})">
+                        <div class="suggestion-avatar">${getInitials(user.username)}</div>
+                        <div>
+                              <div style="font-weight: 600;">${user.username}</div>
+                              <div style="font-size: 12px; color: #666;">⭐ ${user.rating}</div>
+                        </div>
+                  </div>
+                  `).join('');
+
+                  suggestions.style.display = 'block';
+            }
+
+            function selectOpponent(username, rating) {
+                  selectedOpponent = { username, rating };
+                  document.getElementById('opponentSearch').value = username;
+                  document.getElementById('userSuggestions').style.display = 'none';
+            }
+
+            function sendChallenge() {
+                  if (!selectedOpponent) {
+                  alert('Выберите противника!');
+                  return;
+                  }
+                  
+                  alert(`Вызов отправлен игроку ${selectedOpponent.username}!`);
+                  closeChallengeModal();
+                  // Здесь будет API запрос
+            }
+
+            function acceptDuel(id) {
+                  alert(`Дуэль #${id} принята! Перенаправление...`);
+                  // API запрос
+            }
+
+            function rejectDuel(id) {
+                  alert(`Дуэль #${id} отклонена`);
+                  // API запрос
+            }
+
+            function joinDuel(id) {
+                  window.location.href = `/duels/${id}/play`;
+            }
+
+            function viewDuelResults(id) {
+                  window.location.href = `/duels/${id}/results`;
+            }
+
+            // Инициализация
+            renderDuels('incoming');
+            renderDuels('my-challenges');
+            renderDuels('active');
+            renderDuels('history');
+      </script>
+</body>
+</html>

@@ -1,0 +1,434 @@
+* {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+}
+
+body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      min-height: 100vh;
+      padding: 20px;
+}
+
+.header {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 20px 40px;
+      border-radius: 15px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+}
+
+.logo {
+      display: inline-block;
+      font-size: 28px;
+      font-weight: bold;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+}
+
+.nav-links {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+}
+
+.nav-links a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      transition: color 0.3s;
+}
+
+.nav-links a:hover, .nav-links a.active {
+      color: #f5576c;
+}
+
+.container {
+      max-width: 1200px;
+      margin: 0 auto;
+}
+
+.page-header {
+      text-align: center;
+      color: white;
+      margin-bottom: 40px;
+}
+
+.page-header h1 {
+      font-size: 48px;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.page-header p {
+      font-size: 20px;
+      opacity: 0.9;
+}
+
+.action-card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      text-align: center;
+}
+
+.action-card h2 {
+      font-size: 28px;
+      color: #333;
+      margin-bottom: 15px;
+}
+
+.action-card p {
+      color: #666;
+      font-size: 16px;
+      margin-bottom: 25px;
+}
+
+.btn {
+      padding: 15px 40px;
+      border: none;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-block;
+}
+
+.btn-primary {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      color: white;
+}
+
+.btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(245, 87, 108, 0.4);
+}
+
+.btn-secondary {
+      background: transparent;
+      color: #f5576c;
+      border: 2px solid #f5576c;
+}
+
+.btn-secondary:hover {
+      background: #f5576c;
+      color: white;
+}
+
+.btn-success {
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      color: white;
+}
+
+.btn-danger {
+      background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+      color: white;
+}
+
+.tabs {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+}
+
+.tab-btn {
+      padding: 15px 30px;
+      border: none;
+      border-radius: 25px;
+      background: rgba(255, 255, 255, 0.3);
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      backdrop-filter: blur(10px);
+}
+
+.tab-btn:hover, .tab-btn.active {
+      background: white;
+      color: #f5576c;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.duels-section {
+      display: none;
+}
+
+.duels-section.active {
+      display: block;
+}
+
+.duel-card {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s;
+}
+
+.duel-card:hover {
+      transform: translateY(-5px);
+}
+
+.duel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+}
+
+.duel-status-badge {
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+}
+
+.status-pending {
+      background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+      color: white;
+}
+
+.status-accepted {
+      background: linear-gradient(135deg, #4caf50 0%, #8bc34a 100%);
+      color: white;
+}
+
+.status-in-progress {
+      background: linear-gradient(135deg, #2196f3 0%, #03a9f4 100%);
+      color: white;
+}
+
+.status-finished {
+      background: linear-gradient(135deg, #9e9e9e 0%, #607d8b 100%);
+      color: white;
+}
+
+.duel-players {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+      margin-bottom: 25px;
+}
+
+.player {
+      flex: 1;
+      text-align: center;
+}
+
+.player-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: bold;
+      margin: 0 auto 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.player-name {
+      font-size: 18px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 5px;
+}
+
+.player-rating {
+      color: #666;
+      font-size: 14px;
+}
+
+.vs-icon {
+      font-size: 32px;
+      color: #f5576c;
+      font-weight: bold;
+}
+
+.duel-info {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+}
+
+.info-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+}
+
+.info-row:last-child {
+      margin-bottom: 0;
+}
+
+.info-label {
+      color: #666;
+      font-size: 14px;
+}
+
+.info-value {
+      color: #333;
+      font-weight: 600;
+      font-size: 14px;
+}
+
+.duel-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+}
+
+.modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+}
+
+.modal.active {
+      display: flex;
+}
+
+.modal-content {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 20px;
+      text-align: center;
+}
+
+.form-group {
+      margin-bottom: 20px;
+}
+
+.form-label {
+      display: block;
+      color: #666;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+}
+
+.form-input {
+      width: 100%;
+      padding: 12px 20px;
+      border: 2px solid #eee;
+      border-radius: 12px;
+      font-size: 16px;
+      transition: border 0.3s;
+}
+
+.form-input:focus {
+      outline: none;
+      border-color: #f5576c;
+}
+
+.user-suggestions {
+      max-height: 200px;
+      overflow-y: auto;
+      border: 2px solid #eee;
+      border-radius: 12px;
+      margin-top: 10px;
+}
+
+.user-suggestion {
+      padding: 12px 20px;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+}
+
+.user-suggestion:hover {
+      background: #f8f9fa;
+}
+
+.suggestion-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+}
+
+.empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: white;
+}
+
+.empty-state-icon {
+      font-size: 80px;
+      margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+      .nav-links {
+      display: none;
+      }
+
+      .page-header h1 {
+      font-size: 32px;
+      }
+
+      .duel-players {
+      flex-direction: column;
+      gap: 15px;
+      }
+
+      .vs-icon {
+      transform: rotate(90deg);
+      }
+
+      .duel-actions {
+      flex-direction: column;
+      }
+
+      .btn {
+      width: 100%;
+      }
+}

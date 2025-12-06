@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>ORT Arena - User</title>
+      <link rel="stylesheet" href="src/css/user_board.css">
+</head>
+<body>
+      <header class="header">
+            <nav class="nav">
+                  <div class="logo">ORT_Arena</div>
+                  <ul class="nav-links">
+                  <li><a href="home_page.html">Home Page</a></li>
+                  <li><a href="/problems">Problems</a></li>
+                  <li><a href="contests.html">Contests</a></li>
+                  <li><a href="duels.html">Duels</a></li>
+                  <li><a href="#" class="active">Профиль</a></li>
+                  </ul>
+            </nav>
+      </header>
+
+      <div class="container">
+            <div class="profile-header">
+                  <button class="edit-profile-btn" onclick="editProfile()">✏️ Редактировать</button>
+                  
+                  <div class="profile-content">
+                  <div class="profile-avatar-section">
+                        <div class="profile-avatar" id="profileAvatar">АК</div>
+                        <button class="edit-avatar-btn">Изменить фото</button>
+                  </div>
+
+                  <div class="profile-info">
+                        <div class="profile-name" id="profileName">Алмаз Кадыров</div>
+                        <div class="profile-username" id="profileUsername">@almaz_k</div>
+                        <div class="profile-rank" id="profileRank">🎯 Expert (1845)</div>
+                        <div class="profile-bio" id="profileBio">
+                              Студент, увлекаюсь математикой и программированием. 
+                              Готовлюсь к ОРТ и участвую в контестах для практики.
+                        </div>
+                        <div class="badges-container">
+                              <span class="badge">🔥 8 дней подряд</span>
+                              <span class="badge">🏆 15 место</span>
+                              <span class="badge">📚 147 задач</span>
+                        </div>
+                  </div>
+                  </div>
+            </div>
+
+            <div class="stats-grid">
+                  <div class="stat-card">
+                  <div class="stat-icon">📝</div>
+                  <div class="stat-value" id="solvedProblems">147</div>
+                  <div class="stat-label">Решено задач</div>
+                  </div>
+
+                  <div class="stat-card">
+                  <div class="stat-icon">⭐</div>
+                  <div class="stat-value" id="rating">1845</div>
+                  <div class="stat-label">Рейтинг</div>
+                  </div>
+
+                  <div class="stat-card">
+                  <div class="stat-icon">🏆</div>
+                  <div class="stat-value" id="contestsCount">12</div>
+                  <div class="stat-label">Контестов</div>
+                  </div>
+
+                  <div class="stat-card">
+                  <div class="stat-icon">⚔️</div>
+                  <div class="stat-value" id="duelsWon">8</div>
+                  <div class="stat-label">Побед в дуэлях</div>
+                  </div>
+
+                  <div class="stat-card">
+                  <div class="stat-icon">🎯</div>
+                  <div class="stat-value" id="accuracy">92%</div>
+                  <div class="stat-label">Точность</div>
+                  </div>
+
+                  <div class="stat-card">
+                  <div class="stat-icon">🔥</div>
+                  <div class="stat-value" id="streak">8</div>
+                  <div class="stat-label">Дней подряд</div>
+                  </div>
+            </div>
+
+            <div class="content-section">
+                  <div class="section-title">
+                  📊 Прогресс по предметам
+                  </div>
+                  <div class="progress-section" id="subjectsProgress">
+                  <!-- Заполняется JS -->
+                  </div>
+            </div>
+
+            <div class="content-section">
+                  <div class="section-title">
+                  🏅 Достижения
+                  </div>
+                  <div class="achievements-grid" id="achievementsGrid">
+                  <!-- Заполняется JS -->
+                  </div>
+            </div>
+
+            <div class="content-section">
+                  <div class="section-title">
+                  📈 Последняя активность
+                  </div>
+                  <div id="activityFeed">
+                  <!-- Заполняется JS -->
+                  </div>
+            </div>
+      </div>
+
+      <script>
+            const profileData = {
+                  name: 'Алмаз Кадыров',
+                  username: 'almaz_k',
+                  rating: 1845,
+                  rank: 'Expert',
+                  bio: 'Студент, увлекаюсь математикой и программированием. Готовлюсь к ОРТ и участвую в контестах для практики.',
+                  stats: {
+                  solved: 147,
+                  rating: 1845,
+                  contests: 12,
+                  duels_won: 8,
+                  accuracy: 92,
+                  streak: 8
+                  },
+                  subjects: [
+                  { name: 'Математика', progress: 85 },
+                  { name: 'Физика', progress: 72 },
+                  { name: 'История', progress: 68 },
+                  { name: 'Биология', progress: 91 }
+                  ],
+                  achievements: [
+                  { id: 1, icon: '🎯', name: 'Первая кровь', description: 'Решил первую задачу', unlocked: true },
+                  { id: 2, icon: '🔥', name: 'Неделя подряд', description: '7 дней активности', unlocked: true },
+                  { id: 3, icon: '💯', name: 'Сотня', description: 'Решил 100 задач', unlocked: true },
+                  { id: 4, icon: '🏆', name: 'Победитель', description: 'Выиграл контест', unlocked: true },
+                  { id: 5, icon: '⚔️', name: 'Дуэлянт', description: 'Выиграл 5 дуэлей', unlocked: true },
+                  { id: 6, icon: '🎓', name: 'Мастер', description: 'Рейтинг 2000+', unlocked: false },
+                  { id: 7, icon: '🌟', name: 'Легенда', description: 'Топ-10 рейтинга', unlocked: false },
+                  { id: 8, icon: '💎', name: 'Перфекционист', description: '100% по предмету', unlocked: false }
+                  ],
+                  activities: [
+                  {
+                        icon: '✅',
+                        title: 'Решена задача',
+                        description: 'Квадратные уравнения - Математика',
+                        time: '2 часа назад'
+                  },
+                  {
+                        icon: '🏆',
+                        title: 'Завершен контест',
+                        description: 'Математический турнир - 42 место',
+                        time: '5 часов назад'
+                  },
+                  {
+                        icon: '⚔️',
+                        title: 'Победа в дуэли',
+                        description: 'Против Бекболот Исаев',
+                        time: '1 день назад'
+                  },
+                  {
+                        icon: '🎯',
+                        title: 'Получено достижение',
+                        description: 'Сотня - решено 100 задач',
+                        time: '2 дня назад'
+                  },
+                  {
+                        icon: '📚',
+                        title: 'Начат новый предмет',
+                        description: 'Биология - клеточная структура',
+                        time: '3 дня назад'
+                  }
+                  ]
+            };
+
+            function renderSubjectsProgress() {
+                  const container = document.getElementById('subjectsProgress');
+                  container.innerHTML = profileData.subjects.map(subject => `
+                  <div class="subject-progress">
+                        <div class="progress-header">
+                              <span class="subject-name">${subject.name}</span>
+                              <span class="progress-percent">${subject.progress}%</span>
+                        </div>
+                        <div class="progress-bar">
+                              <div class="progress-fill" style="width: ${subject.progress}%"></div>
+                        </div>
+                  </div>
+                  `).join('');
+            }
+
+            function renderAchievements() {
+                  const container = document.getElementById('achievementsGrid');
+                  container.innerHTML = profileData.achievements.map(achievement => `
+                  <div class="achievement ${achievement.unlocked ? 'unlocked' : ''}" 
+                        title="${achievement.description}">
+                        <div class="achievement-icon">${achievement.icon}</div>
+                        <div class="achievement-name">${achievement.name}</div>
+                        <div class="achievement-description">
+                              ${achievement.unlocked ? 'Открыто' : 'Заблокировано'}
+                        </div>
+                  </div>
+                  `).join('');
+            }
+
+            function renderActivity() {
+                  const container = document.getElementById('activityFeed');
+                  container.innerHTML = profileData.activities.map(activity => `
+                  <div class="activity-item">
+                        <div class="activity-icon">${activity.icon}</div>
+                        <div class="activity-content">
+                              <div class="activity-title">${activity.title}</div>
+                              <div class="activity-description">${activity.description}</div>
+                              <div class="activity-time">${activity.time}</div>
+                        </div>
+                  </div>
+                  `).join('');
+            }
+
+            function editProfile() {
+                  alert('Открыть форму редактирования профиля');
+                  // Здесь откроется модальное окно для редактирования
+            }
+
+            // Инициализация
+            renderSubjectsProgress();
+            renderAchievements();
+            renderActivity();
+      </script>
+</body>
+</html>
