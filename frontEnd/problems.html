@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Problems - ORT_Arena</title>
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="src/css/problems.css">
+</head>
+<body>
+      <header class="header">
+            <nav class="nav">
+                  <div class="logo">ORT_Arena</div>
+                  <ul class="nav-links">
+                  <li><a href="home_page.html">Home Page</a></li>
+                  <li><a href="subjects.html">Subjects</a></li>
+                  <li><a href="problems.html" class="active">Problems</a></li>
+                  <li><a href="contests.html">Contests</a></li>
+                  <li><a href="duels.html" >Duels</a></li>
+                  <li><a href="leaderboard.html">Leaderboard</a></li>
+                  <li><a href="user_board.html">Profile</a></li>
+                  </ul>
+            </nav>
+      </header>
+
+      <div class="container">
+
+            <div class="page-header">
+                  <h1 id="pageTitle">📚 Выберите предмет</h1>
+                  <p id="pageSubtitle">Начните с выбора предмета для изучения</p>
+            </div>
+
+            <!-- View 1: Subjects -->
+            <div id="subjectsView" class="view active">
+                  <div class="subjects-grid">
+                  <div class="subject-card" onclick="showTopics('math')">
+                        <div class="subject-icon">📊</div>
+                        <div class="subject-name">Математика</div>
+                        <div class="subject-count">45 тем • 320 задач</div>
+                  </div>
+
+                  <div class="subject-card" onclick="showTopics('physics')">
+                        <div class="subject-icon">🔬</div>
+                        <div class="subject-name">Физика</div>
+                        <div class="subject-count">32 темы • 245 задач</div>
+                  </div>
+
+                  <div class="subject-card" onclick="showTopics('biology')">
+                        <div class="subject-icon">🧬</div>
+                        <div class="subject-name">Биология</div>
+                        <div class="subject-count">38 тем • 280 задач</div>
+                  </div>
+
+                  <div class="subject-card" onclick="showTopics('chemistry')">
+                        <div class="subject-icon">⚗️</div>
+                        <div class="subject-name">Химия</div>
+                        <div class="subject-count">28 тем • 195 задач</div>
+                  </div>
+
+                  <div class="subject-card" onclick="showTopics('history')">
+                        <div class="subject-icon">📖</div>
+                        <div class="subject-name">История</div>
+                        <div class="subject-count">42 темы • 310 задач</div>
+                  </div>
+
+                  <div class="subject-card" onclick="showTopics('geography')">
+                        <div class="subject-icon">🗺️</div>
+                        <div class="subject-name">География</div>
+                        <div class="subject-count">25 тем • 178 задач</div>
+                  </div>
+                  </div>
+            </div>
+
+            <!-- View 2: Topics -->
+            <div id="topicsView" class="view">
+                  <div class="topics-grid" id="topicsList"></div>
+            </div>
+
+            <!-- View 3: Problems -->
+            <div id="problemsView" class="view">
+                  <div class="filters">
+                  <button class="filter-btn active" onclick="filterProblems('all')">Все</button>
+                  <button class="filter-btn" onclick="filterProblems('easy')">Легкие</button>
+                  <button class="filter-btn" onclick="filterProblems('medium')">Средние</button>
+                  <button class="filter-btn" onclick="filterProblems('hard')">Сложные</button>
+                  </div>
+                  <div class="problems-list" id="problemsList"></div>
+            </div>
+      </div>
+
+      <script>
+            let currentSubject = '';
+            let currentTopic = '';
+
+            const subjects = {
+                  math: {
+                  name: 'Математика',
+                  topics: {
+                        algebra: { name: 'Алгебра', problems: 45 },
+                        geometry: { name: 'Геометрия', problems: 38 },
+                        calculus: { name: 'Математический анализ', problems: 32 },
+                        statistics: { name: 'Статистика', problems: 25 }
+                  }
+                  },
+                  physics: {
+                  name: 'Физика',
+                  topics: {
+                        mechanics: { name: 'Механика', problems: 42 },
+                        thermodynamics: { name: 'Термодинамика', problems: 35 },
+                        electromagnetism: { name: 'Электромагнетизм', problems: 38 },
+                        optics: { name: 'Оптика', problems: 28 }
+                  }
+                  },
+                  biology: {
+                  name: 'Биология',
+                  topics: {
+                        cells: { name: 'Клеточное строение', problems: 40 },
+                        genetics: { name: 'Генетика', problems: 35 },
+                        ecology: { name: 'Экология', problems: 32 },
+                        evolution: { name: 'Эволюция', problems: 28 }
+                  }
+                  },
+                  chemistry: {
+                  name: 'Химия',
+                  topics: {
+                        organic: { name: 'Органическая химия', problems: 38 },
+                        inorganic: { name: 'Неорганическая химия', problems: 42 },
+                        physical: { name: 'Физическая химия', problems: 30 }
+                  }
+                  },
+                  history: {
+                  name: 'История',
+                  topics: {
+                        kyrgyzstan: { name: 'История Кыргызстана', problems: 55 },
+                        world: { name: 'Всемирная история', problems: 48 },
+                        ancient: { name: 'Древний мир', problems: 35 }
+                  }
+                  },
+                  geography: {
+                  name: 'География',
+                  topics: {
+                        physical: { name: 'Физическая география', problems: 40 },
+                        economic: { name: 'Экономическая география', problems: 35 },
+                        kyrgyzstan_geo: { name: 'География Кыргызстана', problems: 45 }
+                  }
+                  }
+            };
+
+            const problemsData = {
+                  algebra: [
+                  { title: 'Квадратные уравнения', description: 'Решите уравнение ax² + bx + c = 0', difficulty: 'medium', points: 50 },
+                  { title: 'Системы линейных уравнений', description: 'Найдите решение системы двух уравнений', difficulty: 'easy', points: 30 },
+                  { title: 'Неравенства', description: 'Решите квадратное неравенство', difficulty: 'hard', points: 80 },
+                  { title: 'Функции и графики', description: 'Постройте график квадратичной функции', difficulty: 'medium', points: 45 }
+                  ],
+                  mechanics: [
+                  { title: 'Законы Ньютона', description: 'Применение трех законов Ньютона', difficulty: 'easy', points: 30 },
+                  { title: 'Закон сохранения энергии', description: 'Задачи на кинетическую и потенциальную энергию', difficulty: 'medium', points: 55 },
+                  { title: 'Импульс и столкновения', description: 'Упругие и неупругие столкновения', difficulty: 'hard', points: 75 }
+                  ],
+                  cells: [
+                  { title: 'Строение клетки', description: 'Органеллы и их функции', difficulty: 'easy', points: 25 },
+                  { title: 'Деление клетки', description: 'Митоз и мейоз', difficulty: 'medium', points: 50 },
+                  { title: 'Клеточный метаболизм', description: 'Фотосинтез и дыхание', difficulty: 'hard', points: 70 }
+                  ]
+            };
+
+            function showSubjects() {
+                  document.getElementById('subjectsView').classList.add('active');
+                  document.getElementById('topicsView').classList.remove('active');
+                  document.getElementById('problemsView').classList.remove('active');
+                  
+                  document.getElementById('pageTitle').textContent = '📚 Выберите предмет';
+                  document.getElementById('pageSubtitle').textContent = 'Начните с выбора предмета для изучения';
+                  document.getElementById('breadcrumb').innerHTML = '<a onclick="showSubjects()">Предметы</a>';
+            }
+
+            function showTopics(subject) {
+                  currentSubject = subject;
+                  const subjectData = subjects[subject];
+                  
+                  document.getElementById('subjectsView').classList.remove('active');
+                  document.getElementById('topicsView').classList.add('active');
+                  document.getElementById('problemsView').classList.remove('active');
+                  
+                  document.getElementById('pageTitle').textContent = subjectData.name;
+                  document.getElementById('pageSubtitle').textContent = 'Выберите тему для практики';
+                  document.getElementById('breadcrumb').innerHTML = `
+                  <a onclick="showSubjects()">Предметы</a> 
+                  <span>→</span> 
+                  <span>${subjectData.name}</span>
+                  `;
+                  
+                  const topicsList = document.getElementById('topicsList');
+                  topicsList.innerHTML = '';
+                  
+                  for (let topicId in subjectData.topics) {
+                  const topic = subjectData.topics[topicId];
+                  topicsList.innerHTML += `
+                        <div class="topic-card" onclick="showProblems('${topicId}')">
+                              <div class="topic-info">
+                              <h3>${topic.name}</h3>
+                              <p>${topic.problems} задач доступно</p>
+                              </div>
+                              <div class="topic-arrow">→</div>
+                        </div>
+                  `;
+                  }
+            }
+
+            function showProblems(topic) {
+                  currentTopic = topic;
+                  const subjectData = subjects[currentSubject];
+                  const topicData = subjectData.topics[topic];
+                  
+                  document.getElementById('subjectsView').classList.remove('active');
+                  document.getElementById('topicsView').classList.remove('active');
+                  document.getElementById('problemsView').classList.add('active');
+                  
+                  document.getElementById('pageTitle').textContent = topicData.name;
+                  document.getElementById('pageSubtitle').textContent = 'Решайте задачи и набирайте баллы';
+                  document.getElementById('breadcrumb').innerHTML = `
+                  <a onclick="showSubjects()">Предметы</a> 
+                  <span>→</span> 
+                  <a onclick="showTopics('${currentSubject}')">${subjectData.name}</a>
+                  <span>→</span> 
+                  <span>${topicData.name}</span>
+                  `;
+                  
+                  renderProblems('all');
+            }
+
+            function renderProblems(difficulty) {
+                  const problemsList = document.getElementById('problemsList');
+                  const problems = problemsData[currentTopic] || [];
+                  
+                  problemsList.innerHTML = '';
+                  
+                  problems.forEach(problem => {
+                  if (difficulty === 'all' || problem.difficulty === difficulty) {
+                        problemsList.innerHTML += `
+                              <div class="problem-card" data-difficulty="${problem.difficulty}">
+                              <div class="problem-header">
+                                    <div>
+                                          <div class="problem-title">${problem.title}</div>
+                                          <div class="problem-description">${problem.description}</div>
+                                          <div class="problem-meta">⭐ +${problem.points} баллов</div>
+                                    </div>
+                                    <span class="difficulty ${problem.difficulty}">
+                                          ${problem.difficulty === 'easy' ? 'Легкая' : problem.difficulty === 'medium' ? 'Средняя' : 'Сложная'}
+                                    </span>
+                              </div>
+                              </div>
+                        `;
+                  }
+                  });
+
+                  if (problemsList.innerHTML === '') {
+                  problemsList.innerHTML = '<p style="text-align: center; color: #718096;">Задачи для этой темы скоро появятся</p>';
+                  }
+            }
+
+            function filterProblems(difficulty) {
+                  const buttons = document.querySelectorAll('.filter-btn');
+                  buttons.forEach(btn => btn.classList.remove('active'));
+                  event.target.classList.add('active');
+                  
+                  renderProblems(difficulty);
+            }
+      </script>
+</body>
+</html>

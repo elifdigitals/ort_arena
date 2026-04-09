@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Leaderboard - ORT_Arena</title>
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="src/css/leaderboard.css">
+</head>
+<body>
+      <header class="header">
+            <nav class="nav">
+                  <div class="logo">ORT_Arena</div>
+                  <ul class="nav-links">
+                  <li><a href="home_page.html">Home Page</a></li>
+                  <li><a href="subjects.html">Subjects</a></li>
+                  <li><a href="problems.html">Problems</a></li>
+                  <li><a href="contests.html">Contests</a></li>
+                  <li><a href="duels.html">Duels</a></li>
+                  <li><a href="leaderboard.html" class="active">Leaderboard</a></li>
+                  <li><a href="user_board.html">Profile</a></li>
+                  </ul>
+            </nav>
+      </header>
+
+      <div class="container">
+            <div class="page-header">
+                  <h1>🏆 Leaderboard</h1>
+                  <p>Лучшие участники платформы</p>
+            </div>
+
+            <div class="tabs">
+                  <div class="tab active" onclick="switchTab('week')">Неделя</div>
+                  <div class="tab" onclick="switchTab('month')">Месяц</div>
+                  <div class="tab" onclick="switchTab('year')">Год</div>
+            </div>
+
+            <!-- Weekly Leaderboard -->
+            <div id="week" class="tab-content active">
+                  <div class="leaderboard">
+                  <div class="leaderboard-item">
+                        <div class="rank gold">1</div>
+                        <div class="avatar">АБ</div>
+                        <div class="user-info">
+                              <div class="username">Айдар Бекмуратов</div>
+                              <div class="solved">324 задач решено</div>
+                        </div>
+                        <div class="score">2450</div>
+                  </div>
+                  <div class="leaderboard-item">
+                        <div class="rank silver">2</div>
+                        <div class="avatar">НА</div>
+                        <div class="user-info">
+                              <div class="username">Нурай Асанова</div>
+                              <div class="solved">298 задач решено</div>
+                        </div>
+                        <div class="score">2380</div>
+                  </div>
+                  <div class="leaderboard-item">
+                        <div class="rank bronze">3</div>
+                        <div class="avatar">ЭТ</div>
+                        <div class="user-info">
+                              <div class="username">Эмир Токтомушев</div>
+                              <div class="solved">276 задач решено</div>
+                        </div>
+                        <div class="score">2315</div>
+                  </div>
+                  <div class="leaderboard-item">
+                        <div class="rank">4</div>
+                        <div class="avatar">ТА</div>
+                        <div class="user-info">
+                              <div class="username">Ты (Алмаз)</div>
+                              <div class="solved">147 задач решено</div>
+                        </div>
+                        <div class="score">1845</div>
+                  </div>
+                  <div class="leaderboard-item">
+                        <div class="rank">5</div>
+                        <div class="avatar">МК</div>
+                        <div class="user-info">
+                              <div class="username">Максат Кадыров</div>
+                              <div class="solved">132 задач решено</div>
+                        </div>
+                        <div class="score">1720</div>
+                  </div>
+                  </div>
+            </div>
+
+            <!-- Monthly Leaderboard -->
+            <div id="month" class="tab-content">
+                  <div class="leaderboard">
+                  <div class="leaderboard-item">
+                        <div class="rank gold">1</div>
+                        <div class="avatar">НА</div>
+                        <div class="user-info">
+                              <div class="username">Нурай Асанова</div>
+                              <div class="solved">1248 задач решено</div>
+                        </div>
+                        <div class="score">8920</div>
+                  </div>
+                  <div class="leaderboard-item">
+                        <div class="rank silver">2</div>
+                        <div class="avatar">АБ</div>
+                        <div class="user-info">
+                              <div class="username">Айдар Бекмуратов</div>
+                              <div class="solved">1156 задач решено</div>
+                        </div>
+                        <div class="score">8650</div>
+                  </div>
+                  <div class="leaderboard-item">
+                        <div class="rank bronze">3</div>
+                        <div class="avatar">ЭТ</div>
+                        <div class="user-info">
+                              <div class="username">Эмир Токтомушев</div>
+                              <div class="solved">987 задач решено</div>
+                        </div>
+                        <div class="score">7890</div>
+                  </div>
+                  <div class="leaderboard-item">
+                        <div class="rank">4</div>
+                        <div class="avatar">ТА</div>
+                        <div class="user-info">
+                              <div class="username">Ты (Алмаз)</div>
+                              <div class="solved">654 задач решено</div>
+                        </div>
+                        <div class="score">5430</div>
+                  </div>
+                  <div class="leaderboard-item">
+                        <div class="rank">5</div>
+                        <div class="avatar">МК</div>
+                        <div class="user-info">
+                              <div class="username">Максат Кадыров</div>
+                              <div class="solved">589 задач решено</div>
+                        </div>
+                        <div class="score">4820</div>
+                  </div>
+                  </div>
+            </div>
+
+            <!-- Yearly Leaderboard -->
+            <div id="year" class="tab-content">
+                  <div class="leaderboard">
+                  <div class="leaderboard-item">
+                        <div class="rank gold">1</div>
+                        <div class="avatar">АБ</div>
+                        <div class="user-info">
+                              <div class="username">Айдар Бекмуратов</div>
+                              <div class="solved">4567 задач решено</div>
+                        </div>
+                        <div class="score">32450</div>
+                  </div>
+                  <div class="leaderboard-item">
+                        <div class="rank silver">2</div>
+                        <div class="avatar">НА</div>
+                        <div class="user-info">
+                              <div class="username">Нурай Асанова</div>
+                              <div class="solved">4234 задач решено</div>
+                        </div>
+                        <div class="score">31200</div>
+                  </div>
+                  <div class="leaderboard-item">
+                        <div class="rank bronze">3</div>
+                        <div class="avatar">ЭТ</div>
+                        <div class="user-info">
+                              <div class="username">Эмир Токтомушев</div>
+                              <div class="solved">3987 задач решено</div>
+                        </div>
+                        <div class="score">28900</div>
+                  </div>
+                  <div class="leaderboard-item">
+                        <div class="rank">4</div>
+                        <div class="avatar">МК</div>
+                        <div class="user-info">
+                              <div class="username">Максат Кадыров</div>
+                              <div class="solved">2876 задач решено</div>
+                        </div>
+                        <div class="score">21450</div>
+                  </div>
+                  <div class="leaderboard-item">
+                        <div class="rank">5</div>
+                        <div class="avatar">ТА</div>
+                        <div class="user-info">
+                              <div class="username">Ты (Алмаз)</div>
+                              <div class="solved">2123 задач решено</div>
+                        </div>
+                        <div class="score">18320</div>
+                  </div>
+                  </div>
+            </div>
+      </div>
+
+      <script>
+            function switchTab(period) {
+                  // Hide all tabs
+                  document.querySelectorAll('.tab-content').forEach(content => {
+                  content.classList.remove('active');
+                  });
+                  
+                  // Remove active from all tab buttons
+                  document.querySelectorAll('.tab').forEach(tab => {
+                  tab.classList.remove('active');
+                  });
+                  
+                  // Show selected tab
+                  document.getElementById(period).classList.add('active');
+                  
+                  // Activate clicked button
+                  event.target.classList.add('active');
+            }
+      </script>
+</body>
+</html>
